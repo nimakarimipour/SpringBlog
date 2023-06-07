@@ -3,9 +3,6 @@ package com.raysmond.blog.services;
 import com.raysmond.blog.Constants;
 import com.raysmond.blog.models.User;
 import com.raysmond.blog.repositories.UserRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +22,6 @@ import java.util.Collections;
 
 @Transactional
 @Service
-@Slf4j
 public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
@@ -82,8 +78,6 @@ public class UserService implements UserDetailsService {
 
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
-
-        log.info("User @{} changed password.", user.getEmail());
 
         return true;
     }

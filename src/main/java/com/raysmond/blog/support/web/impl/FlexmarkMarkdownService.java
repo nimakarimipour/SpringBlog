@@ -13,8 +13,6 @@ import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.options.MutableDataSet;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * 使用flexmark-java解析markdown
  * 参考：https://github.com/vsch/flexmark-java
@@ -22,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
  * @author Raysmond
  */
 @Service("flexmark")
-@Slf4j
 public class FlexmarkMarkdownService implements MarkdownService {
     @Override
     public String renderToHtml(String content) {

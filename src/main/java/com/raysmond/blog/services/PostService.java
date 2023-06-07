@@ -2,6 +2,7 @@ package com.raysmond.blog.services;
 
 import com.raysmond.blog.Constants;
 import com.raysmond.blog.error.NotFoundException;
+import com.raysmond.blog.log;
 import com.raysmond.blog.models.Post;
 import com.raysmond.blog.models.Tag;
 import com.raysmond.blog.models.support.PostFormat;
@@ -9,8 +10,6 @@ import com.raysmond.blog.models.support.PostStatus;
 import com.raysmond.blog.models.support.PostType;
 import com.raysmond.blog.repositories.PostRepository;
 import com.raysmond.blog.support.web.MarkdownService;
-
-import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,7 +31,6 @@ import java.util.stream.Collectors;
  * @author Raysmond
  */
 @Service
-@Slf4j
 @Transactional
 public class PostService {
 
@@ -50,7 +48,6 @@ public class PostService {
     private MarkdownService markdownService;
 
     public Post getPost(Long postId) {
-        log.debug("Get post " + postId);
 
         Post post = postRepository.findOne(postId);
 
@@ -62,7 +59,6 @@ public class PostService {
     }
 
     public Post getPublishedPostByPermalink(String permalink) {
-        log.debug("Get post with permalink " + permalink);
 
         Post post = postRepository.findByPermalinkAndPostStatus(permalink, PostStatus.PUBLISHED);
 
@@ -104,7 +100,6 @@ public class PostService {
     }
 
     public List<Post> getArchivePosts() {
-        log.debug("Get all archive posts from database.");
 
         Pageable page = new PageRequest(0, Integer.MAX_VALUE, Sort.Direction.DESC, "createdAt");
         return postRepository.findAllByPostTypeAndPostStatus(PostType.POST, PostStatus.PUBLISHED, page)
@@ -115,7 +110,6 @@ public class PostService {
     }
 
     public List<Tag> getPostTags(Post post) {
-        log.debug("Get tags of post {}", post.getId());
 
         List<Tag> tags = new ArrayList<>();
 
@@ -137,7 +131,6 @@ public class PostService {
     }
 
     public Page<Post> getAllPublishedPostsByPage(int page, int pageSize) {
-        log.debug("Get posts by page " + page);
 
         return postRepository.findAllByPostTypeAndPostStatus(
                 PostType.POST,

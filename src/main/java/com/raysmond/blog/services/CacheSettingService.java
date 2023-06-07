@@ -3,8 +3,6 @@ package com.raysmond.blog.services;
 import com.raysmond.blog.models.Setting;
 import com.raysmond.blog.repositories.SettingRepository;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,7 +15,6 @@ import java.io.Serializable;
  * @author Raysmond
  */
 @Service
-@Slf4j
 @Transactional
 public class CacheSettingService implements SettingService {
     private SettingRepository settingRepository;
@@ -34,11 +31,8 @@ public class CacheSettingService implements SettingService {
         Serializable value = null;
         try {
             value = setting == null ? null : setting.getValue();
-        } catch (Exception ex) {
-            log.info("Cannot deserialize setting value with key = " + key);
+        } catch (Exception ignored) {
         }
-
-        log.info("Get setting " + key + " from database. Value = " + value);
 
         return value;
     }
@@ -53,7 +47,6 @@ public class CacheSettingService implements SettingService {
     @Override
     @CacheEvict(value = "settingCache", key = "#key")
     public void put(String key, Serializable value) {
-        log.info("Update setting " + key + " to database. Value = " + value);
 
         Setting setting = settingRepository.findByKey(key);
         if (setting == null) {
@@ -63,9 +56,7 @@ public class CacheSettingService implements SettingService {
         try {
             setting.setValue(value);
             settingRepository.save(setting);
-        } catch (Exception ex) {
-
-            log.info("Cannot save setting value with type: " + value.getClass() + ". key = " + key);
+        } catch (Exception ignored) {
         }
     }
 }
